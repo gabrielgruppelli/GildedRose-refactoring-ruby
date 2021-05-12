@@ -92,6 +92,22 @@ describe GildedRose do
         expect(items[0].quality).to eq 40
       end
     end
+
+    describe "Generic Item" do
+      it "when sell in is above 0 and quality less then 50" do
+        items = [Item.new("Generic Item", 11, 40)]
+        GildedRose.new(items).update_quality()
+        expect(items[0].sell_in).to eq 10
+        expect(items[0].quality).to eq 39
+      end
+
+      it "when sell in is equal 0 and quality less then 50" do
+        items = [Item.new("Generic Item", 0, 40)]
+        GildedRose.new(items).update_quality()
+        expect(items[0].sell_in).to eq -1
+        expect(items[0].quality).to eq 38
+      end
+    end
   end
 
 end

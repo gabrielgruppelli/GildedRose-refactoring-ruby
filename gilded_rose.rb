@@ -1,44 +1,10 @@
 class GildedRose
-
   def initialize(items)
     @items = items
   end
 
-  def update_quality()
-    @items.each do |item|
-      if item.name == "Aged Brie"
-        item.decrement_sell_in
-        item.increment_quality
-
-        if item.sell_in < 0
-          item.increment_quality
-        end
-      elsif item.name == "Backstage passes to a TAFKAL80ETC concert"
-        item.decrement_sell_in
-        item.increment_quality
-
-        if item.sell_in < 10
-          item.increment_quality
-        end
-
-        if item.sell_in < 5
-          item.increment_quality
-        end
-
-        if item.sell_in < 0
-          item.quality = 0
-        end
-      elsif item.name == "Sulfuras, Hand of Ragnaros"
-        item.quality = 80
-      else
-        item.decrement_sell_in
-        item.decrement_quality
-
-        if item.sell_in < 0
-          item.decrement_quality
-        end
-      end
-    end
+  def update_quality
+    @items.each &:update_quality
   end
 end
 
@@ -56,15 +22,46 @@ class Item
   end
 
   def decrement_quality
-    @quality -= 1 if @quality > 0
+    @quality -= 1 if @quality.positive?
   end
-
 
   def decrement_sell_in
     @sell_in -= 1
   end
 
-  def to_s()
+  def to_s
     "#{@name}, #{@sell_in}, #{@quality}"
+  end
+end
+
+class AgedBrieItem < Item
+  def update_quality
+    self.decrement_sell_in
+    self.increment_quality
+    self.increment_quality if self.sell_in.negative?
+  end
+end
+
+class BackstageItem < Item
+  def update_quality
+    self.decrement_sell_in
+    self.increment_quality
+    self.increment_quality if self.sell_in < 10
+    self.increment_quality if self.sell_in < 5
+    self.quality = 0 if self.sell_in.negative?
+  end
+end
+
+class SulfurasItem < Item
+  def update_quality
+    self.quality = 80
+  end
+end
+
+class GenericItem < Item
+  def update_quality
+    self.decrement_sell_in
+    self.decrement_quality
+    self.decrement_quality if self.sell_in.negative?
   end
 end

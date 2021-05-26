@@ -4,7 +4,7 @@ class GildedRose
   end
 
   def update_quality
-    @items.each &:update_quality
+    @items.each(&:update_quality)
   end
 end
 
@@ -36,26 +36,26 @@ end
 
 class AgedBrieItem < Item
   def update_quality
-    self.decrement_sell_in
-    self.increment_quality
-    self.increment_quality if self.sell_in.negative?
+    decrement_sell_in
+    increment_quality
+    increment_quality if sell_in.negative?
   end
 end
 
 class ConjuredItem < Item
   def update_quality
-    self.decrement_sell_in
-    self.decrement_quality(2)
+    decrement_sell_in
+    decrement_quality(2)
   end
 end
 
 class BackstageItem < Item
   def update_quality
-    self.decrement_sell_in
-    self.increment_quality
-    self.increment_quality if self.sell_in < 10
-    self.increment_quality if self.sell_in < 5
-    self.quality = 0 if self.sell_in.negative?
+    decrement_sell_in
+    increment_quality
+    increment_quality if sell_in < 10
+    increment_quality if sell_in < 5
+    self.quality = 0 if sell_in.negative?
   end
 end
 
@@ -67,8 +67,8 @@ end
 
 class GenericItem < Item
   def update_quality
-    self.decrement_sell_in
-    self.decrement_quality
-    self.decrement_quality if self.sell_in.negative?
+    decrement_sell_in
+    decrement_quality
+    decrement_quality if sell_in.negative?
   end
 end

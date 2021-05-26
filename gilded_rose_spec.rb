@@ -20,6 +20,17 @@ describe GildedRose do
       end
     end
 
+    context "Conjured Item" do
+      context "when quality less then 50" do
+        it "decreases quality in 2" do
+          items = [ConjuredItem.new("Conjured Item", 11, 40)]
+          GildedRose.new(items).update_quality()
+          expect(items[0].sell_in).to eq 10
+          expect(items[0].quality).to eq 38
+        end
+      end
+    end
+
     context "Aged Brie" do
       context "when quality is above 50" do
         it "quality keeps the same if sell in is above 0" do

@@ -17,12 +17,12 @@ class Item
     @quality = quality
   end
 
-  def increment_quality
-    @quality += 1 if @quality < 50
+  def increment_quality(multiplier = 1)
+    @quality += 1 * multiplier if @quality < 50
   end
 
-  def decrement_quality
-    @quality -= 1 if @quality.positive?
+  def decrement_quality(multiplier = 1)
+    @quality -= 1 * multiplier if @quality.positive?
   end
 
   def decrement_sell_in
@@ -39,6 +39,13 @@ class AgedBrieItem < Item
     self.decrement_sell_in
     self.increment_quality
     self.increment_quality if self.sell_in.negative?
+  end
+end
+
+class ConjuredItem < Item
+  def update_quality
+    self.decrement_sell_in
+    self.decrement_quality(2)
   end
 end
 
